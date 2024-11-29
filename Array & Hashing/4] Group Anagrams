@@ -1,0 +1,61 @@
+====================// HashMap - sorting //====================================
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String,List<String>> map = new HashMap<>();
+
+        for(String str : strs){
+
+            char[] arr = str.toCharArray();
+            Arrays.sort(arr);
+            String sortedStr = new String(arr);
+
+            if(!map.containsKey(sortedStr)){
+                map.put(sortedStr, new ArrayList<>());
+            }
+            map.get(sortedStr).add(str);
+        }
+        return new ArrayList<>(map.values());
+    }
+}
+// TC: O(n*klogk)
+// SC: O(n*k)
+
+====================// hashtable //====================================
+class Solution {
+
+    private String generateKey(String str){
+        int count[] = new int[26];
+            //O(k)
+        for(char ch : str.toCharArray()){
+            count[ch-'a'] += 1;  // a-a = 0 and suppose b-a = 1
+        }
+        // make key using #
+        StringBuilder sb = new StringBuilder();
+                //O(26)
+        for(int i = 0; i<26; i++){
+            sb.append('#');
+            sb.append(count[i]);
+        }
+        return sb.toString(); // return key
+    }
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String,List<String>> map = new HashMap<>();
+        
+        //O(n)
+        for(int i = 0; i<strs.length; i++){
+            String key = generateKey(strs[i]);
+
+            if(!map.containsKey(key)){
+                map.put(key,new ArrayList<>());
+            }
+            map.get(key).add(strs[i]);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+}
+
+//O(n*(k+ 26)) = O(n* k)
+// O(n*k)
